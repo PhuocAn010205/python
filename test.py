@@ -83,12 +83,12 @@ def detect_plate_and_classify(path):
     if image is None:
         return "Lỗi: Không đọc được ảnh. Vui lòng kiểm tra đường dẫn hoặc định dạng ảnh."
     image_resized = imutils.resize(image, width=600)
-    gray = cv2.cvtColor(image_resized, cv2.COLOR_BGR2GRAY)
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     gray = cv2.bilateralFilter(gray, 11, 17, 17)
-    edged = cv2.Canny(gray, 50, 200)
+    edged = cv2.Canny(gray, 30, 200)
 
-    cnts, _ = cv2.findContours(edged.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-    cnts = sorted(cnts, key=cv2.contourArea, reverse=True)[:20]
+    cnts, _ = cv2.findContours(edged.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    cnts = sorted(cnts, key=cv2.contourArea, reverse=True)[:10]
 
     plate_found = False
     roi = image_resized
